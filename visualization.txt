@@ -1,0 +1,139 @@
+Dataset : Tipping data
+Description : It is a dataset of tips received by a waiter over the period of few months The dataset contains 244 records. There are 7 variables in this dataset such as tip, bill, day, time etc
+Code:
+import plotly.express as px
+df = px.data.tips()
+print(df)
+ 
+A) Bubble Chart
+fig = px.scatter(df, x="size", y="total_bill",
+				color="day",
+				size='tip',
+				hover_data=['sex'])
+fig.show()
+ 
+Figure 1 :- Bubble Chart
+B) Scatter Plot
+fig1 = px.scatter(df, x="total_bill", y="tip", color="time")
+fig1.show()
+ 
+Figure 2 :- Scatter Plot
+C) Heatmaps
+hd = []
+ld = []
+dd = []
+tld = []
+tdd =[]
+fld = []
+fdd =[]
+sald = []
+sadd =[]
+suld = []
+sudd =[]
+for i in range(244):
+  if df["time"][i] == 'Lunch':
+    if df["day"][i]== 'Thur':
+      tld.append(df["size"][i])
+    elif df["day"][i]== 'Fri':
+      fld.append(df["size"][i])
+    elif df["day"][i]== 'Sat':
+      sald.append(df["size"][i])
+    else:
+      suld.append(df["size"][i])
+  else:
+    if df["day"][i]== 'Thur':
+      tdd.append(df["size"][i])
+    elif df["day"][i]== 'Fri':
+      fdd.append(df["size"][i])
+    elif df["day"][i]== 'Sat':
+      sadd.append(df["size"][i])
+    else:
+      sudd.append(df["size"][i])
+ld.append(sum(tld))
+ld.append(sum(fld))
+ld.append(sum(sald))
+ld.append(sum(suld))
+dd.append(sum(tdd))
+dd.append(sum(fdd))
+dd.append(sum(sadd))
+dd.append(sum(sudd))
+hd.append(ld)
+hd.append(dd)
+fig = px.imshow(hd,
+                labels=dict(x="day", y="time", color="size"),
+                x=['Thur', 'Fri','Sat','Sun'],
+                y=['Lunch','Dinner']
+               )
+fig.update_xaxes(side="top")
+fig.show()
+
+ 
+Figure 3 :- Heatmaps
+D) Histogram
+fig = px.histogram(df, x="total_bill")
+fig.show()
+ Figure 4 :- Histogram
+E) Boxplot
+df["total_bill"].describe()]
+ 
+fig = px.box(df, y="total_bill")
+fig.show()
+ 
+Figure 5 :- Boxplot
+
+F) Density Plot
+import matplotlib.pyplot as plt
+# density plot for 'tip'
+df['tip'].plot.density(color='green')
+plt.title('Density Plot for Tip')
+plt.show()
+ 
+Figure 6 :- Density Plot
+G) Ogives less than
+import numpy as np
+data = df["tip"]
+print(max(data))
+print(min(data))
+ 
+# creating class interval
+classInterval = [0,1,2,3,4,5,6,7,8,9,10]
+ 
+# calculating frequency and class interval
+values, base = np.histogram(data, bins=classInterval)
+ 
+# calculating cumulative sum
+cumsum = np.cumsum(values)
+ 
+# plotting  the ogive graph
+plt.plot(base[1:], cumsum, color='red', marker='o', linestyle='-')
+ 
+# formatting
+plt.title('Ogive Graph')
+plt.xlabel('Tip')
+plt.ylabel('Cumulative Frequency')
+ 
+Figure 7 :- Ogives less than
+H) Ogives more than
+# reversing cumulative frequency
+res = np.flipud(cumsum)
+ 
+# plotting ogive
+plt.plot(base[1:], res, color='brown', marker='o', linestyle='-')
+ 
+# formatting the graph
+plt.title('Ogive Graph')
+plt.xlabel('Tip')
+plt.ylabel('Cumulative Frequency')
+ 
+Figure 8 :- Ogives more than
+I) Pie Chart
+cd = [sum(ld),sum(dd)]
+time = ['Lunch','Dinner']
+plt.pie(cd, labels = time)
+plt.title("Number of customers during Lunch and Dinner")
+plt.show()
+ 
+Figure 9 :- Pie Diagram
+J) Line Chart
+fig = px.line(df, x=range(244), y="tip", title='Tips per customer')
+fig.show()
